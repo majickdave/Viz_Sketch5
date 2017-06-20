@@ -38,7 +38,7 @@ void ofApp::setup(){
     grabber.setDesiredFrameRate(45);
     
     // Set front or back
-    grabber.setDeviceID(0);
+    grabber.setDeviceID(1);
     
     grabber.setup(ofGetWidth(), ofGetHeight(), OF_PIXELS_BGRA);
     tex.allocate(grabber.getWidth(), grabber.getHeight(), GL_RGB);
@@ -91,13 +91,13 @@ void ofApp::update(){
 void ofApp::draw(){
     
 //    float spinX = sin(ofGetElapsedTimef()*.35f);
-    float spinY = cos(ofGetElapsedTimef()*.075f);
+//    float spinY = cos(ofGetElapsedTimef()*.075f);
     
     // draw video
     ofSetColor(255, 255, 255);
-//    tex.draw(0, 40, tex.getWidth(), tex.getHeight());
+    tex.draw(0, 40, tex.getWidth(), tex.getHeight());
     
-    grabber.draw(0, 40, grabber.getWidth(), grabber.getHeight());
+//    grabber.draw(0, 40, grabber.getWidth(), grabber.getHeight());
     
 
     
@@ -111,7 +111,7 @@ void ofApp::draw(){
     posX = mouseX;
     posY = mouseY;
 //    sphere1.rotate(spinX, 1.0, 0.0, 0.0);
-    sphere1.rotate(spinY, 0, 1.0, 0.0);
+//    sphere1.rotate(spinY, 0, 1.0, 0.0);
     
     
     //sphere1.setPosition(posX, posY, 0);
