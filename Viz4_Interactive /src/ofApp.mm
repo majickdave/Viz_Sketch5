@@ -6,9 +6,8 @@ void ofApp::setup(){
     ofBackground(255);
     sphere1.setRadius( ofGetWidth()/9 );
     
-
     
-    sphere1 = ofSpherePrimitive(ofGetWidth()/4, 24);
+    sphere1 = ofSpherePrimitive(ofGetWidth()/14, 24);
     
     std::cout << &sphere1 << std::endl;
     
@@ -34,19 +33,17 @@ void ofApp::setup(){
     
 //    ofSetFrameRate(30);
      
-    
-    grabber.setDesiredFrameRate(45);
+    grabber.setDeviceID(camera);
+    grabber.setDesiredFrameRate(30);
     
     // Set front or back
-    grabber.setDeviceID(1);
+    grabber.setDeviceID(camera);
     
     grabber.setup(ofGetWidth(), ofGetHeight(), OF_PIXELS_BGRA);
     tex.allocate(grabber.getWidth(), grabber.getHeight(), GL_RGB);
 
     
     pix = new unsigned char[ (int)( grabber.getWidth() * grabber.getHeight() * 3.0) ];
-    
-
     
 
 
@@ -68,7 +65,7 @@ void ofApp::update(){
 //                            );
     
 
-    
+
     grabber.update();
     
     if(grabber.isFrameNew() == true) {
@@ -77,9 +74,9 @@ void ofApp::update(){
         int totalPix = grabber.getWidth() * grabber.getHeight() * 3;
         
         for(int k = 0; k < totalPix; k+= 3){
-            pix[k  ] = 255*cos(ofGetFrameNum()/(100*PI)) - src[k];
-            pix[k+1] = 255*cos(ofGetFrameNum()/(100*PI))  - src[k+1];
-            pix[k+2] = 255*cos(ofGetFrameNum()/(100*PI))  + src[k+2];
+            pix[k  ] = 255*sin(ofGetFrameNum()/(1000*PI)) + src[k];
+            pix[k+1] = 255*cos(ofGetFrameNum()/(100*PI))  + src[k+1];
+            pix[k+2] = 255*sin(ofGetFrameNum()/(10*PI))  + src[k+2];
         }
         
         tex.loadData(pix, grabber.getWidth(), grabber.getHeight(), GL_RGB);
@@ -94,22 +91,23 @@ void ofApp::draw(){
 //    float spinY = cos(ofGetElapsedTimef()*.075f);
     
     // draw video
+    
     ofSetColor(255, 255, 255);
-    tex.draw(0, 40, tex.getWidth(), tex.getHeight());
+    
+
+        tex.draw(0, 40, tex.getWidth(), tex.getHeight());
     
 //    grabber.draw(0, 40, grabber.getWidth(), grabber.getHeight());
     
 
-    
+
      // Lighting
 //    ofEnableLighting();
 //    pointLight.enable();
 //    pointLight2.enable();
 //    pointLight3.enable();
     
-    // Position
-    posX = mouseX;
-    posY = mouseY;
+
 //    sphere1.rotate(spinX, 1.0, 0.0, 0.0);
 //    sphere1.rotate(spinY, 0, 1.0, 0.0);
     
@@ -117,10 +115,10 @@ void ofApp::draw(){
     //sphere1.setPosition(posX, posY, 0);
     // Draw
     
-    grabber.getTexture().bind();
+//    grabber.getTexture().bind();
     tex.bind();
     
-    for (int i=0; i<6; i++){
+    for (int i=0; i<20; i++){
         ofPushMatrix();
         ofTranslate(polysLocs[i].x, polysLocs[i].y);
         ofRotate(rots[i]);
@@ -132,8 +130,11 @@ void ofApp::draw(){
     }
     
     
-//    sphere1.setRadius(ofGetHeight()/mouseX);
-//    sphere1.draw();
+    // Position
+    posX = mouseX;
+    posY = mouseY;
+    sphere1.setRadius(ofGetWidth()/4);
+    sphere1.draw();
     
 
     
@@ -154,6 +155,7 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
 //--------------------------------------------------------------
 void ofApp::touchMoved(ofTouchEventArgs & touch){
     sphere1.setPosition(mouseX, mouseY, 0);
+//    sphere1.setRadius(ofGetWidth()/mouseX);
 
 }
 
@@ -166,9 +168,14 @@ void ofApp::touchUp(ofTouchEventArgs & touch){
 
 //--------------------------------------------------------------
 void ofApp::touchDoubleTap(ofTouchEventArgs & touch){
-
-    grabber.close();
-    grabber.setDeviceID(0);
+    if (camera==1){
+        camera=0;
+    } else {
+        camera=1;
+    }
+    grabber = *new ofVideoGrabber();
+    grabber.setup(ofGetWidth(), ofGetHeight(), OF_PIXELS_BGRA);
+    setup();
     
 }
 

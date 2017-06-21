@@ -31,7 +31,7 @@ class ofApp : public ofxiOSApp {
 
     
     // Declare Object Classes
-    const static int POLY_COUNT = 6;
+    const static int POLY_COUNT = 20;
     ofVec3f polysLocs[POLY_COUNT];
     float rots[POLY_COUNT];
     float polyRots[POLY_COUNT];
@@ -50,6 +50,9 @@ class ofApp : public ofxiOSApp {
     ofLight pointLight3;
     
     bool frontCamera;
+    
+    int camera = 1;
+    bool running;
     
 
 };
